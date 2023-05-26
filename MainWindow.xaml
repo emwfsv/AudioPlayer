@@ -1,0 +1,113 @@
+﻿<Window x:Class="AudioPlayer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AudioPlayer"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        WindowStyle="ThreeDBorderWindow"
+        mc:Ignorable="d"
+        Title="Audioplayer" Height="800" Width="1300" MinWidth="800" MinHeight="600" Icon="Resources/icon.png">
+    <Grid Background="#FED0BB" Width="Auto" MinWidth="700">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="23"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="#8C2F39">
+            <!-- Menu Bar -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.Column="0">
+                <materialDesign:PackIcon Kind="MusicCircleOutline" Width="50" Height="50" Foreground="#461220" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0"/>
+                <Button x:Name="btnOpen" Style="{StaticResource MaterialDesignIconButton}" Click="btnFolderSelect_Click" Width="50" Height="50" ToolTip="Exit Application">
+                    <materialDesign:PackIcon Kind="FolderOpen" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Button>
+                <Button x:Name="btnBack" Style="{StaticResource MaterialDesignIconButton}" Click="btnStepBackSelect_Click" Width="50" Height="50" ToolTip="Exit Application">
+                    <materialDesign:PackIcon Kind="StepBackward" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Button>
+                <Button x:Name="btnStop" Style="{StaticResource MaterialDesignIconButton}" Click="btnStopSelect_Click" Width="50" Height="50" ToolTip="Exit Application">
+                    <materialDesign:PackIcon Kind="Stop" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Button>
+                <Button x:Name="btnPlayPause" Style="{StaticResource MaterialDesignIconButton}" Click="btnPlayPauseSelect_Click" Width="50" Height="50" ToolTip="Exit Application">
+                    <materialDesign:PackIcon x:Name="btnPlayIcon" Kind="Play" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Button>
+                <Button x:Name="btnForward" Style="{StaticResource MaterialDesignIconButton}" Click="btnStepForwardSelect_Click" Width="50" Height="50" ToolTip="Exit Application">
+                    <materialDesign:PackIcon Kind="StepForward" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,5,0">
+
+                <Button x:Name="btnSettings" Style="{StaticResource MaterialDesignIconButton}" Click="btnSettings_Click" Width="50" Height="50" ToolTip="Settings for the application">
+                    <materialDesign:PackIcon Kind="Settings" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Button>
+                <Button x:Name="btnAbout" Style="{StaticResource MaterialDesignIconButton}" Click="btnAbout_Click" Width="50" Height="50" ToolTip="About application">
+                    <materialDesign:PackIcon Kind="About" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Button>
+                <Button x:Name="btnExit" Style="{StaticResource MaterialDesignIconButton}" Click="btnExit_Click" Width="50" Height="50" ToolTip="Exit Application">
+                    <materialDesign:PackIcon Kind="Close" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+            <DataGrid x:Name="dataGridFolderList" 
+                      Grid.Column="0" 
+                      ItemsSource="{Binding}" 
+                      Background="#FCB9B2"  
+                      BorderBrush="Black" 
+                      BorderThickness="1"
+                      CanUserAddRows="False"
+                      SelectionUnit="FullRow"
+                      Foreground="Black"
+                      SelectionMode="Extended"
+                      IsReadOnly="True"                      
+                      AutoGenerateColumns="False"
+                      FontSize="12"
+                      FontFamily="Source Sans Pro"
+                      VerticalScrollBarVisibility="Auto"
+                      SelectedCellsChanged="dataGridFolderList_SelectedCellsChanged"/>
+            <DataGrid x:Name="dataGridFileData" 
+                      Grid.Column="1" 
+                      ItemsSource="{Binding}" 
+                      Background="#FCB9B2"  
+                      BorderBrush="Black" 
+                      BorderThickness="1"
+                      CanUserAddRows="False"
+                      SelectionUnit="FullRow"
+                      Foreground="Black"
+                      SelectionMode="Extended"
+                      IsReadOnly="True"                      
+                      AutoGenerateColumns="False"
+                      FontSize="12"
+                      FontFamily="Source Sans Pro"
+                      VerticalScrollBarVisibility="Auto"/>
+        </Grid>
+        <Grid Grid.Row="2" Background="#FED0BB">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="250"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" HorizontalAlignment="Left">
+                <Label x:Name="lblVersion" FontSize="11" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Left">
+                <Label x:Name="lblCurrentFolder" FontSize="11" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2" HorizontalAlignment="Left">
+                <Label Content="Developed by: 'emwfsv', with NuGet: '©NAudio'" FontSize="11" VerticalAlignment="Center"/>
+            </StackPanel>
+
+
+        </Grid>
+    </Grid>
+</Window>

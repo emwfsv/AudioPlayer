@@ -1,0 +1,4 @@
+/.vs/AudioPlayer/DesignTimeBuild/*.v2
+/.vs
+/bin/Debug/net6.0-windows
+/obj
