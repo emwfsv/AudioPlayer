@@ -2,3 +2,6 @@
 /.vs
 /bin/Debug/net6.0-windows
 /obj
+/Installer/Installer-SetupFiles
+/bin/Release/net6.0-windows
+/Installer/Installer-cache

@@ -19,20 +19,21 @@ namespace Players.NPlayer
         }
 
         public PlaybackStopTypes PlaybackStopType { get; set; }
+        public enum PlayerStatus
+        {
+            Stopped,
+            Paused,
+            Resumed
+        }
 
         private AudioFileReader _audioFileReader;
 
         private DirectSoundOut _output;
 
-        public event Action PlaybackResumed;
-        public event Action PlaybackStopped;
-        public event Action PlaybackPaused;
+        public event Stopped PlayerStopped;
+        public event Paused PlayerPaused;
+        public event Resumed PlayerResumed;
 
-
-        public NPlayer()
-        {
-
-        }
 
         public NPlayer(string filepath, float volume)
         {
@@ -54,26 +55,18 @@ namespace Players.NPlayer
             if (playbackState == PlaybackState.Stopped || playbackState == PlaybackState.Paused)
             {
                 _output.Play();
+                OnProcessCompleted(PlayerStatus.Resumed);
             }
 
             _audioFileReader.Volume = (float)currentVolumeLevel;
-
-            if (PlaybackResumed != null)
-            {
-                PlaybackResumed();
-            }
         }
 
         private void _output_PlaybackStopped(object sender, StoppedEventArgs e)
         {
-            Dispose();
-            if (PlaybackStopped != null)
-            {
-                PlaybackStopped();
-            }
+            OnProcessCompleted(PlayerStatus.Stopped);
         }
 
-        public void Stop()
+            public void Stop()
         {
             if (_output != null)
             {
@@ -86,11 +79,7 @@ namespace Players.NPlayer
             if (_output != null)
             {
                 _output.Pause();
-
-                if (PlaybackPaused != null)
-                {
-                    PlaybackPaused();
-                }
+                OnProcessCompleted(PlayerStatus.Paused);
             }
         }
 
@@ -170,6 +159,24 @@ namespace Players.NPlayer
             if (_output != null)
             {
                 _audioFileReader.Volume = value;
+            }
+        }
+
+        protected virtual void OnProcessCompleted(PlayerStatus playerStatus) //protected virtual method
+        {
+            switch(playerStatus)
+            {
+                case PlayerStatus.Stopped:
+                    PlayerStopped?.Invoke();
+                    break;
+                case PlayerStatus.Paused:
+                    PlayerPaused?.Invoke();
+                    break;
+                case PlayerStatus.Resumed:
+                    PlayerResumed?.Invoke();
+                    break;
+                default: 
+                    break;
             }
         }
     }

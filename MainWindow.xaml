@@ -10,7 +10,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         WindowStyle="ThreeDBorderWindow"
         mc:Ignorable="d"
-        Title="Audioplayer" Height="800" Width="1300" MinWidth="800" MinHeight="600" Icon="Resources/icon.png">
+        Title="Audioplayer" Height="800" Width="1300" MinWidth="800" MinHeight="600" Icon="/Resources/icon.png" WindowStartupLocation="CenterScreen">
     <Grid Background="#FED0BB" Width="Auto" MinWidth="700">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -104,7 +104,7 @@
                 <Label x:Name="lblCurrentFolder" FontSize="11" VerticalAlignment="Center"/>
             </StackPanel>
             <StackPanel Grid.Column="2" HorizontalAlignment="Left">
-                <Label Content="Developed by: 'emwfsv', with NuGet: '©NAudio'" FontSize="11" VerticalAlignment="Center"/>
+                <Label Content="Developed by: 'emwfsv', with NuGet: 'NAudio©'" FontSize="11" VerticalAlignment="Center"/>
             </StackPanel>
 
 

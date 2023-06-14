@@ -19,7 +19,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Binding = System.Windows.Data.Binding;
+using AudioPlayer.Classes;
+using AudioPlayer.Handlers;
+//using Binding = System.Windows.Data.Binding;
 
 namespace AudioPlayer
 {
@@ -41,16 +43,11 @@ namespace AudioPlayer
             // creating the datagrid tables
             DataGridObjects_Folder = new List<DataGridObject>();
             DataGridObjects_FileData = new List<DataGridObject>();
+            TrackFrameDatas = new Dictionary<string, string>();
 
             //Populate default datagrid columns
             PopulateDataGridWithColumns(dataGridFolderList, DataGridFolderColumnNames);
-            PopulateDataGridWithColumns(dataGridFileData, DataGridFileColumnNames);
-
-            //Next song should be selected automatically.
-            NPlayer = new Players.NPlayer.NPlayer();
-            NPlayer.PlaybackPaused += SetControlsPause;
-            NPlayer.PlaybackResumed += SetControlsPlayPause;
-            NPlayer.PlaybackStopped += SetControlsStopped;
+            PopulateDataGridWithColumns(dataGridFileData, DataGridTrackDataColumnNames);
         }
 
         private string? SelectedFolderPath { set; get; }
@@ -62,9 +59,13 @@ namespace AudioPlayer
 
         //Datagrid Objects
         private List<string> DataGridFolderColumnNames = new List<string>() { "TrackNo", "Track" };
-        private List<string> DataGridFileColumnNames = new List<string>() { "Info", "Value" };
+        private List<string> DataGridTrackDataColumnNames = new List<string>() { "Info", "Value" };
+        private Dictionary<string, string> TrackFrameDatas;
         private List<DataGridObject> DataGridObjects_Folder;
         private List<DataGridObject> DataGridObjects_FileData;
+
+        //
+        private Mp3TrackHandler Mp3TrackHandler { set; get; }
 
         //=======================================================
         //                  Button Actions
@@ -84,10 +85,17 @@ namespace AudioPlayer
             SelectedFolderPath = fileDialog.SelectedPath;
             lblCurrentFolder.Content = $"Path: {fileDialog.SelectedPath}";
 
+            //Stop player if its running and set flags
+            StopPlayer();
+            Playing = false;
+            NewSong = false;
+
             //Populate Folder File View
             PopulateFolderFileDataGridWithValues();
+            //btnPlayPauseSelect_Click(sender, e);
 
-            btnPlayPauseSelect_Click(sender, e);
+            LoadTrackData();
+            PopulateTrackDataGridWithValues();
 
         }
 
@@ -100,12 +108,13 @@ namespace AudioPlayer
         {
             btnPlayIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
             Playing = false;
-            NPlayer.Stop();
+            NewSong = false;
+            StopPlayer();
         }
 
         private void btnPlayPauseSelect_Click(object sender, RoutedEventArgs e)
         {
-            if(Playing)
+            if(Playing && !NewSong)
             {
                 NPlayer.TogglePlayPause(NPlayer.GetVolume());
             }
@@ -115,25 +124,15 @@ namespace AudioPlayer
                 {
                     if(NewSong)
                     {
-                        NPlayer.Stop();
+                        StopPlayer();
                     }
 
-                    var selectedValue = dataGridFolderList.SelectedValue as DataGridObject;
+                    StartPlayer();
 
-                    if (selectedValue != null)
-                    {
-                        //Select file?
-                        CurrentLoadedFile = $"{SelectedFolderPath}\\{selectedValue.RowValues.FirstOrDefault(x => x.Key == "TRACK").Value}";
-
-                        //Start player
-                        NPlayer = new Players.NPlayer.NPlayer(CurrentLoadedFile, 1.0f);
-                        NPlayer.Play(PlaybackState.Stopped, NPlayer.GetVolume());
-
-                        //Set states
-                        btnPlayIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
-                        Playing = true;
-                        NewSong = false;
-                    }
+                    //Set states
+                    btnPlayIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
+                    Playing = true;
+                    NewSong = false;
                 }
                 catch { }
             }
@@ -154,8 +153,8 @@ namespace AudioPlayer
 
                     if (Playing)
                     {
-                        NPlayer.Stop();
-                        Playing = false;
+                        StopPlayer();
+                        Playing = true;
                         NewSong = true;
                         btnPlayPauseSelect_Click(this, null);
                     }
@@ -175,8 +174,8 @@ namespace AudioPlayer
 
                     if (Playing)
                     {
-                        NPlayer.Stop();
-                        Playing = false;
+                        StopPlayer();
+                        Playing = true;
                         NewSong = true;
                         btnPlayPauseSelect_Click(this, null);
                     }
@@ -193,7 +192,8 @@ namespace AudioPlayer
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
         {
-
+            var _aboutForm = new Forms.About_Form();
+            _aboutForm.ShowDialog();
         }
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
@@ -232,7 +232,7 @@ namespace AudioPlayer
                 var column = new DataGridTextColumn
                 {
                     Header = headerItem.Trim().ToUpper(),
-                    Binding = new Binding("RowValues[" + headerItem.Trim().ToUpper() + "]"),
+                    Binding = new System.Windows.Data.Binding("RowValues[" + headerItem.Trim().ToUpper() + "]"),
                     IsReadOnly = false,
                     Visibility = Visibility.Visible
                 };
@@ -299,6 +299,49 @@ namespace AudioPlayer
             }
         }
 
+        private void PopulateTrackDataGridWithValues()
+        {
+            //Empty datagrid first.
+            dataGridFileData.ItemsSource = null;
+            DataGridObjects_FileData.Clear();
+
+  
+            if (TrackFrameDatas.Count != 0)
+            {
+                try
+                {
+                    int i = 1;
+                    foreach (var frameData in TrackFrameDatas)
+                    {
+
+                        //Constructor
+                        var dic = new Dictionary<string, string>();
+
+                        //Populate data
+                        try
+                        {
+                            dic.Add(DataGridTrackDataColumnNames[0].ToUpper(), frameData.Key);
+                            dic.Add(DataGridTrackDataColumnNames[1].ToUpper(), frameData.Value);
+                        }
+                        catch { }
+
+                        //Create object and add to List.
+                        var o = new DataGridObject()
+                        {
+                            RowValues = dic
+                        };
+                        DataGridObjects_FileData.Add(o);
+                    }
+
+                    //Bind the source
+                    dataGridFileData.ItemsSource = DataGridObjects_FileData;
+                }
+                catch { }
+
+                dataGridFileData.SelectedIndex = 0;
+            }
+        }
+
         private List<FileInfo> GetAllSupportedFilesInFolder(string folder)
         {
             try
@@ -317,6 +360,9 @@ namespace AudioPlayer
                 NPlayer.Pause();
                 btnPlayPauseSelect_Click(this, null);
             }
+
+            LoadTrackData();
+            PopulateTrackDataGridWithValues();
         }
 
         //=======================================================
@@ -325,7 +371,7 @@ namespace AudioPlayer
 
         private void SetControlsPause()
         {
-            btnPlayIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Pause;
+            btnPlayIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.PlayPause;
         }
 
         private void SetControlsPlayPause()
@@ -335,19 +381,108 @@ namespace AudioPlayer
 
         private void SetControlsStopped()
         {
-            btnPlayIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
-            Playing = false;
+            if (!Playing)
+            { 
+                btnPlayIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
+                Playing = false;
+            }
+            else
+            {
+                SelectNext();
+            }
         }
-    }
 
-    public class DataGridObject
-    {
-        public DataGridObject() : base()
+
+        //=======================================================
+        //                     Player Actions
+        //=======================================================
+
+        private void StartPlayer()
         {
-            RowValues = new Dictionary<string, string>();
+            var selectedValue = dataGridFolderList.SelectedValue as DataGridObject;
+
+            if (selectedValue != null)
+            {
+
+                //Select file?
+                CurrentLoadedFile = $"{SelectedFolderPath}\\{selectedValue.RowValues.FirstOrDefault(x => x.Key == "TRACK").Value}";
+
+                //Start player
+                NPlayer = new Players.NPlayer.NPlayer(CurrentLoadedFile, 1.0f);
+                NPlayer.Play(PlaybackState.Stopped, NPlayer.GetVolume());
+
+
+                //Next song should be selected automatically.
+                NPlayer.PlayerPaused += SetControlsPause;
+                NPlayer.PlayerResumed += SetControlsPlayPause;
+                NPlayer.PlayerStopped += SetControlsStopped;
+            }
         }
 
-        public Dictionary<string, string> RowValues { get; set; }
-    }
+        private void StopPlayer()
+        {
+            if (NPlayer != null)
+            {
+                NPlayer.Stop();
+                btnPlayIcon.Kind = MaterialDesignThemes.Wpf.PackIconKind.Play;
 
+                //Next song should be selected automatically.
+                NPlayer.PlayerPaused -= SetControlsPause;
+                NPlayer.PlayerResumed -= SetControlsPlayPause;
+                NPlayer.PlayerStopped -= SetControlsStopped;
+            }
+
+            this.Title = "Audioplayer";
+           
+        }
+
+        private void LoadTrackData()
+        {
+            try
+            {
+                //Get the selected value from datagrid
+                var selectedValue = dataGridFolderList.SelectedValue as DataGridObject;
+
+                if (selectedValue != null)
+                {
+                    //Read file data
+                    var filePath = $"{SelectedFolderPath}\\{selectedValue.RowValues.FirstOrDefault(x => x.Key == "TRACK").Value}";
+                    var trackData = File.ReadAllBytes(filePath);
+
+                    //Constructor
+                    Mp3TrackHandler = new Mp3TrackHandler(trackData);
+
+                    var tagId = Mp3TrackHandler.HeaderData.TagIdentifier();
+                    var tagVersion = Mp3TrackHandler.HeaderData.TagVersion();
+                    var tagSize = Mp3TrackHandler.HeaderData.TagSize();
+
+                    var tags = Mp3TrackHandler.FrameData.ExtracedFrameData(tagSize);
+
+                    if(tags.Count != 0)
+                    {
+                        var artist = (tags.FirstOrDefault(x => x.FrameIdentifier == "TPE1").FrameData ?? "").Replace("\0", "");
+                        var album = (tags.FirstOrDefault(x => x.FrameIdentifier == "TALB").FrameData ?? "").Replace("\0", "");
+                        var title = (tags.FirstOrDefault(x => x.FrameIdentifier == "TIT2").FrameData ?? "").Replace("\0", "");
+
+                    TrackFrameDatas = new Dictionary<string, string>
+                        {
+                            { "TrackID", tagId },
+                            { "TagVer.", tagVersion },
+                            { "TrackNo", (tags.FirstOrDefault(x => x.FrameIdentifier == "TRCK").FrameData ?? "").Replace("\0", "") },
+                            { "Artist", artist },
+                            { "Year", (tags.FirstOrDefault(x => x.FrameIdentifier == "TYER").FrameData ?? "").Replace("\0", "") },
+                            { "Album", album },
+                            { "Title", title }
+                        };
+
+                        //Update Window title
+                        this.Title = $"Audioplayer | {artist} | {album} | {title}";
+                    }
+
+
+                }
+            }
+            catch { }
+        }
+    }
 }

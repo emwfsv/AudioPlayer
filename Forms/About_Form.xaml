@@ -1,0 +1,29 @@
+﻿<Window x:Class="AudioPlayer.Forms.About_Form"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AudioPlayer.Forms"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="About" Height="250" Width="400" ResizeMode="NoResize" Topmost="True" WindowStartupLocation="CenterOwner">
+    <Grid Background="#FCB9B2" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="#8C2F39">
+            <materialDesign:PackIcon Kind="About" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0"/>
+        </Grid>
+        
+        <StackPanel Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
+            <Label Content="This desktop app developed by EMWFSV©" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"></Label>
+            <Label Content="Why? Because! (Just for fun.)" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"></Label>
+            <Label Content="Never ever stop listen to music!!!!" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14"></Label>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Vertical" VerticalAlignment="Center">
+            <Button x:Name="btnExit" Content="EXIT" Click="btnExit_Click" Width="60" Height="30" Background="#8C2F39"></Button>
+        </StackPanel>
+    </Grid>
+</Window>

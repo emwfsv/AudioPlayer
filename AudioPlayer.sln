@@ -3,18 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudioPlayer", "AudioPlayer.csproj", "{2D9A5652-8532-4C16-82AF-025DCD560D11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AudioPlayer", "AudioPlayer.csproj", "{2D9A5652-8532-4C16-82AF-025DCD560D11}"
+EndProject
+Project("{840C416C-B8F3-42BC-B0DD-F6BB14C9F8CB}") = "Installer", "Installer\Installer.aiproj", "{B975ABBF-21E7-4C9C-AAC5-296460D6624D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
 		Debug|Any CPU = Debug|Any CPU
+		DefaultBuild|Any CPU = DefaultBuild|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D9A5652-8532-4C16-82AF-025DCD560D11}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{2D9A5652-8532-4C16-82AF-025DCD560D11}.All|Any CPU.Build.0 = Release|Any CPU
 		{2D9A5652-8532-4C16-82AF-025DCD560D11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2D9A5652-8532-4C16-82AF-025DCD560D11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D9A5652-8532-4C16-82AF-025DCD560D11}.DefaultBuild|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D9A5652-8532-4C16-82AF-025DCD560D11}.DefaultBuild|Any CPU.Build.0 = Debug|Any CPU
 		{2D9A5652-8532-4C16-82AF-025DCD560D11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D9A5652-8532-4C16-82AF-025DCD560D11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B975ABBF-21E7-4C9C-AAC5-296460D6624D}.All|Any CPU.ActiveCfg = DefaultBuild
+		{B975ABBF-21E7-4C9C-AAC5-296460D6624D}.All|Any CPU.Build.0 = DefaultBuild
+		{B975ABBF-21E7-4C9C-AAC5-296460D6624D}.Debug|Any CPU.ActiveCfg = DefaultBuild
+		{B975ABBF-21E7-4C9C-AAC5-296460D6624D}.Debug|Any CPU.Build.0 = DefaultBuild
+		{B975ABBF-21E7-4C9C-AAC5-296460D6624D}.DefaultBuild|Any CPU.ActiveCfg = DefaultBuild
+		{B975ABBF-21E7-4C9C-AAC5-296460D6624D}.DefaultBuild|Any CPU.Build.0 = DefaultBuild
+		{B975ABBF-21E7-4C9C-AAC5-296460D6624D}.Release|Any CPU.ActiveCfg = DefaultBuild
+		{B975ABBF-21E7-4C9C-AAC5-296460D6624D}.Release|Any CPU.Build.0 = DefaultBuild
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
