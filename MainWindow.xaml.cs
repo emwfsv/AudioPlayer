@@ -14,14 +14,10 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using AudioPlayer.Classes;
 using AudioPlayer.Handlers;
-//using Binding = System.Windows.Data.Binding;
+using System.Timers;
+using System.Threading;
 
 namespace AudioPlayer
 {
@@ -48,12 +44,18 @@ namespace AudioPlayer
             //Populate default datagrid columns
             PopulateDataGridWithColumns(dataGridFolderList, DataGridFolderColumnNames);
             PopulateDataGridWithColumns(dataGridFileData, DataGridTrackDataColumnNames);
+
+            //Create timer function
+            _timer = new System.Timers.Timer(250); //Updates every quarter second.
+            _timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
         }
 
         private string? SelectedFolderPath { set; get; }
         private string CurrentLoadedFile { set; get; }
         private bool Playing { set; get; }
         private bool NewSong { set; get; }
+        private readonly System.Timers.Timer _timer;
+        private SynchronizationContext _uiContext = SynchronizationContext.Current;
 
         private Players.NPlayer.NPlayer NPlayer { set; get; }
 
@@ -64,7 +66,7 @@ namespace AudioPlayer
         private List<DataGridObject> DataGridObjects_Folder;
         private List<DataGridObject> DataGridObjects_FileData;
 
-        //
+        //Trach handler
         private Mp3TrackHandler Mp3TrackHandler { set; get; }
 
         //=======================================================
@@ -92,8 +94,8 @@ namespace AudioPlayer
 
             //Populate Folder File View
             PopulateFolderFileDataGridWithValues();
-            //btnPlayPauseSelect_Click(sender, e);
 
+            //Populate Track data
             LoadTrackData();
             PopulateTrackDataGridWithValues();
 
@@ -183,6 +185,33 @@ namespace AudioPlayer
 
             }
             catch { }
+        }
+
+        private void btnRewindStepSelect_Click(object sender, RoutedEventArgs e)
+        {
+            var currentTime = NPlayer.GetPositionInSeconds();
+            if (currentTime < 30)
+            {
+                NPlayer.SetPosition(0);
+            }
+            else
+            {
+                NPlayer.SetPosition(currentTime - 30);
+            }
+        }
+
+        private void btnFastForwardSelect_Click(object sender, RoutedEventArgs e)
+        {
+            var currentTime = NPlayer.GetPositionInSeconds();
+            var maxTime = NPlayer.GetLenghtInSeconds();
+            if (maxTime < currentTime + 30)
+            {
+                NPlayer.SetPosition(maxTime - 1);
+            }
+            else
+            {
+                NPlayer.SetPosition(currentTime + 30);
+            }
         }
 
         private void btnSettings_Click(object sender, RoutedEventArgs e)
@@ -416,6 +445,9 @@ namespace AudioPlayer
                 NPlayer.PlayerPaused += SetControlsPause;
                 NPlayer.PlayerResumed += SetControlsPlayPause;
                 NPlayer.PlayerStopped += SetControlsStopped;
+
+                //Enable timer
+                _timer.Enabled = true;
             }
         }
 
@@ -430,6 +462,10 @@ namespace AudioPlayer
                 NPlayer.PlayerPaused -= SetControlsPause;
                 NPlayer.PlayerResumed -= SetControlsPlayPause;
                 NPlayer.PlayerStopped -= SetControlsStopped;
+
+                //Disabled timer and reset UI Label
+                _timer.Enabled = false;
+                lbl_ScoreText.Content = "00:00:00";
             }
 
             this.Title = "Audioplayer";
@@ -481,6 +517,27 @@ namespace AudioPlayer
 
 
                 }
+            }
+            catch { }
+        }
+
+        //=======================================================
+        //                     Timer Actions
+        //=======================================================
+
+        async Task<string> GetPosition(Players.NPlayer.NPlayer nPlayer)
+        {
+            return TimeSpan.FromSeconds(Math.Round(NPlayer.GetPositionInSeconds())).ToString();
+        }
+
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            try
+            {
+                _uiContext.Post(new SendOrPostCallback(new Action<object>(o => 
+                { 
+                    lbl_ScoreText.Content = Task.Run(() => GetPosition(NPlayer)).Result;
+                })), null);
             }
             catch { }
         }

@@ -1,9 +1,7 @@
 ﻿using AudioPlayer.Classes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AudioPlayer.Handlers
 {
@@ -86,9 +84,6 @@ namespace AudioPlayer.Handlers
         }
 
         private Mp3TrackHandler Mp3TrackHandler { get; set; }
-
-        //private Dictionary<string, string> ReturnData { get; set; }
-
 
         public List<TrackFrameData> ExtracedFrameData(int tagsize)
         {

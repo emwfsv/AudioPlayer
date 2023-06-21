@@ -25,25 +25,31 @@
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.Column="0">
                 <materialDesign:PackIcon Kind="MusicCircleOutline" Width="50" Height="50" Foreground="#461220" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0"/>
-                <Button x:Name="btnOpen" Style="{StaticResource MaterialDesignIconButton}" Click="btnFolderSelect_Click" Width="50" Height="50" ToolTip="Exit Application">
+                <Button x:Name="btnOpen" Style="{StaticResource MaterialDesignIconButton}" Click="btnFolderSelect_Click" Width="50" Height="50" ToolTip="Select Folder with files">
                     <materialDesign:PackIcon Kind="FolderOpen" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
-                <Button x:Name="btnBack" Style="{StaticResource MaterialDesignIconButton}" Click="btnStepBackSelect_Click" Width="50" Height="50" ToolTip="Exit Application">
+                <Button x:Name="btnRewindStep" Style="{StaticResource MaterialDesignIconButton}" Click="btnRewindStepSelect_Click" Width="50" Height="50" ToolTip="Rewind track 30 seconds">
+                    <materialDesign:PackIcon Kind="Rewind30" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Button>
+                <Button x:Name="btnBack" Style="{StaticResource MaterialDesignIconButton}" Click="btnStepBackSelect_Click" Width="50" Height="50" ToolTip="Previous track">
                     <materialDesign:PackIcon Kind="StepBackward" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
-                <Button x:Name="btnStop" Style="{StaticResource MaterialDesignIconButton}" Click="btnStopSelect_Click" Width="50" Height="50" ToolTip="Exit Application">
+                <Button x:Name="btnStop" Style="{StaticResource MaterialDesignIconButton}" Click="btnStopSelect_Click" Width="50" Height="50" ToolTip="Stop playing">
                     <materialDesign:PackIcon Kind="Stop" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
-                <Button x:Name="btnPlayPause" Style="{StaticResource MaterialDesignIconButton}" Click="btnPlayPauseSelect_Click" Width="50" Height="50" ToolTip="Exit Application">
+                <Button x:Name="btnPlayPause" Style="{StaticResource MaterialDesignIconButton}" Click="btnPlayPauseSelect_Click" Width="50" Height="50" ToolTip="Play track">
                     <materialDesign:PackIcon x:Name="btnPlayIcon" Kind="Play" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
-                <Button x:Name="btnForward" Style="{StaticResource MaterialDesignIconButton}" Click="btnStepForwardSelect_Click" Width="50" Height="50" ToolTip="Exit Application">
+                <Button x:Name="btnForward" Style="{StaticResource MaterialDesignIconButton}" Click="btnStepForwardSelect_Click" Width="50" Height="50" ToolTip="Next track">
                     <materialDesign:PackIcon Kind="StepForward" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
+                <Button x:Name="btnFastForwardStep" Style="{StaticResource MaterialDesignIconButton}" Click="btnFastForwardSelect_Click" Width="50" Height="50" ToolTip="Rewind track 30 seconds">
+                    <materialDesign:PackIcon Kind="FastForward30" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </Button>
+                <Label x:Name="lbl_ScoreText" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="50,0,0,0" Content="00:00:00" Foreground="#FCB9B2" FontFamily="{StaticResource TrackTimer}" FontSize="35" FontStyle="Normal" FontWeight="Normal"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,5,0">
-
-                <Button x:Name="btnSettings" Style="{StaticResource MaterialDesignIconButton}" Click="btnSettings_Click" Width="50" Height="50" ToolTip="Settings for the application">
+                <Button x:Name="btnSettings" Style="{StaticResource MaterialDesignIconButton}" Click="btnSettings_Click" Width="50" Height="50" ToolTip="Application settings">
                     <materialDesign:PackIcon Kind="Settings" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
                 <Button x:Name="btnAbout" Style="{StaticResource MaterialDesignIconButton}" Click="btnAbout_Click" Width="50" Height="50" ToolTip="About application">
