@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace AudioPlayer.Classes
 {
@@ -20,5 +21,14 @@ namespace AudioPlayer.Classes
     {
         public string FrameIdentifier { get; set; }
         public string FrameData { get; set; }
+    }
+
+    public class ApplicationColorScheme
+    {
+        public SolidColorBrush? ApplicationBanner { get; set; }
+        public SolidColorBrush? ApplicationLogo { get; set; }
+        public SolidColorBrush? ApplicationBackground { get;set; }
+        public SolidColorBrush? ApplicationButtonText { get; set; }
+        public SolidColorBrush? ApplicationDatagridText { get; set; }
     }
 }

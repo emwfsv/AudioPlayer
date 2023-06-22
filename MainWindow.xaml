@@ -11,56 +11,62 @@
         WindowStyle="ThreeDBorderWindow"
         mc:Ignorable="d"
         Title="Audioplayer" Height="800" Width="1300" MinWidth="800" MinHeight="600" Icon="/Resources/icon.png" WindowStartupLocation="CenterScreen">
-    <Grid Background="#FED0BB" Width="Auto" MinWidth="700">
+    <Grid Width="Auto" MinWidth="700">
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="23"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Background="#8C2F39">
+        <Grid x:Name="grdMenyBar" Grid.Row="0" >
             <!-- Menu Bar -->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.Column="0">
-                <materialDesign:PackIcon Kind="MusicCircleOutline" Width="50" Height="50" Foreground="#461220" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0"/>
+                <materialDesign:PackIcon x:Name="appIcon" Kind="MusicCircleOutline" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0"/>
                 <Button x:Name="btnOpen" Style="{StaticResource MaterialDesignIconButton}" Click="btnFolderSelect_Click" Width="50" Height="50" ToolTip="Select Folder with files">
-                    <materialDesign:PackIcon Kind="FolderOpen" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <materialDesign:PackIcon Kind="FolderOpen" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
+                <RepeatButton x:Name="btnRewind" Style="{StaticResource MaterialDesignIconButton}" Click="btnRewindSelect_Click" Width="50" Height="50" ToolTip="Rewind track" >
+                    <materialDesign:PackIcon Kind="Rewind" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </RepeatButton>
                 <Button x:Name="btnRewindStep" Style="{StaticResource MaterialDesignIconButton}" Click="btnRewindStepSelect_Click" Width="50" Height="50" ToolTip="Rewind track 30 seconds">
-                    <materialDesign:PackIcon Kind="Rewind30" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <materialDesign:PackIcon Kind="Rewind30" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
                 <Button x:Name="btnBack" Style="{StaticResource MaterialDesignIconButton}" Click="btnStepBackSelect_Click" Width="50" Height="50" ToolTip="Previous track">
-                    <materialDesign:PackIcon Kind="StepBackward" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <materialDesign:PackIcon Kind="StepBackward" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
                 <Button x:Name="btnStop" Style="{StaticResource MaterialDesignIconButton}" Click="btnStopSelect_Click" Width="50" Height="50" ToolTip="Stop playing">
-                    <materialDesign:PackIcon Kind="Stop" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <materialDesign:PackIcon Kind="Stop" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
                 <Button x:Name="btnPlayPause" Style="{StaticResource MaterialDesignIconButton}" Click="btnPlayPauseSelect_Click" Width="50" Height="50" ToolTip="Play track">
-                    <materialDesign:PackIcon x:Name="btnPlayIcon" Kind="Play" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <materialDesign:PackIcon x:Name="btnPlayIcon" Kind="Play" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
                 <Button x:Name="btnForward" Style="{StaticResource MaterialDesignIconButton}" Click="btnStepForwardSelect_Click" Width="50" Height="50" ToolTip="Next track">
-                    <materialDesign:PackIcon Kind="StepForward" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <materialDesign:PackIcon Kind="StepForward" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
-                <Button x:Name="btnFastForwardStep" Style="{StaticResource MaterialDesignIconButton}" Click="btnFastForwardSelect_Click" Width="50" Height="50" ToolTip="Rewind track 30 seconds">
-                    <materialDesign:PackIcon Kind="FastForward30" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <Button x:Name="btnFastForwardStep" Style="{StaticResource MaterialDesignIconButton}" Click="btnFastForwardStepSelect_Click" Width="50" Height="50" ToolTip="Fastforward track 30 seconds">
+                    <materialDesign:PackIcon Kind="FastForward30" Width="40" Height="40"  VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
-                <Label x:Name="lbl_ScoreText" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="50,0,0,0" Content="00:00:00" Foreground="#FCB9B2" FontFamily="{StaticResource TrackTimer}" FontSize="35" FontStyle="Normal" FontWeight="Normal"/>
+                <RepeatButton x:Name="btnFastForward" Style="{StaticResource MaterialDesignIconButton}" Click="btnFastForwardSelect_Click" Width="50" Height="50" ToolTip="Fastforward track" >
+                    <materialDesign:PackIcon Kind="FastForward" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                </RepeatButton>
+                <Label x:Name="lbl_ScoreText" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="50,0,0,0" Content="00:00:00" FontFamily="{StaticResource TrackTimer}" FontSize="35" FontStyle="Normal" FontWeight="Normal"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,5,0">
                 <Button x:Name="btnSettings" Style="{StaticResource MaterialDesignIconButton}" Click="btnSettings_Click" Width="50" Height="50" ToolTip="Application settings">
-                    <materialDesign:PackIcon Kind="Settings" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <materialDesign:PackIcon Kind="Settings" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
                 <Button x:Name="btnAbout" Style="{StaticResource MaterialDesignIconButton}" Click="btnAbout_Click" Width="50" Height="50" ToolTip="About application">
-                    <materialDesign:PackIcon Kind="About" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <materialDesign:PackIcon Kind="About" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
                 <Button x:Name="btnExit" Style="{StaticResource MaterialDesignIconButton}" Click="btnExit_Click" Width="50" Height="50" ToolTip="Exit Application">
-                    <materialDesign:PackIcon Kind="Close" Width="50" Height="50" Foreground="#FCB9B2" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <materialDesign:PackIcon Kind="Close" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 </Button>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" x:Name="gridDatagrid">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="3*"/>
@@ -68,12 +74,9 @@
             <DataGrid x:Name="dataGridFolderList" 
                       Grid.Column="0" 
                       ItemsSource="{Binding}" 
-                      Background="#FCB9B2"  
-                      BorderBrush="Black" 
                       BorderThickness="1"
                       CanUserAddRows="False"
                       SelectionUnit="FullRow"
-                      Foreground="Black"
                       SelectionMode="Extended"
                       IsReadOnly="True"                      
                       AutoGenerateColumns="False"
@@ -84,12 +87,9 @@
             <DataGrid x:Name="dataGridFileData" 
                       Grid.Column="1" 
                       ItemsSource="{Binding}" 
-                      Background="#FCB9B2"  
-                      BorderBrush="Black" 
                       BorderThickness="1"
                       CanUserAddRows="False"
                       SelectionUnit="FullRow"
-                      Foreground="Black"
                       SelectionMode="Extended"
                       IsReadOnly="True"                      
                       AutoGenerateColumns="False"
@@ -97,7 +97,7 @@
                       FontFamily="Source Sans Pro"
                       VerticalScrollBarVisibility="Auto"/>
         </Grid>
-        <Grid Grid.Row="2" Background="#FED0BB">
+        <Grid x:Name="gridFooter" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
@@ -112,8 +112,6 @@
             <StackPanel Grid.Column="2" HorizontalAlignment="Left">
                 <Label Content="Developed by: 'emwfsv', with NuGet: 'NAudio©'" FontSize="11" VerticalAlignment="Center"/>
             </StackPanel>
-
-
         </Grid>
     </Grid>
 </Window>

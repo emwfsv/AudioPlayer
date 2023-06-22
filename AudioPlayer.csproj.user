@@ -14,6 +14,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Forms\Settings_Form.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Forms\About_Form.xaml">
       <SubType>Designer</SubType>
     </Page>

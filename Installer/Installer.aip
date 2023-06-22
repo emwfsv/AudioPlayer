@@ -9,6 +9,7 @@
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_AudioPlayer.dll_1" Value="..\bin\Release\net6.0-windows\publish"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_AudioPlayer.exe" Value="..\bin\Release\net6.0-windows\publish"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_AudioPlayer.runtimeconfig.json" Value="..\bin\Release\net6.0-windows\publish"/>
+    <ROW Property="AI_PROPPATH_DIR_PERBUILD_DangerOnTheMotorwayxV10.ttf" Value="..\bin\Release\net6.0-windows\publish\Fonts"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_MaterialDesignColors.dll" Value="..\bin\Release\net6.0-windows\publish"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_MaterialDesignThemes.Wpf.dll" Value="..\bin\Release\net6.0-windows\publish"/>
     <ROW Property="AI_PROPPATH_DIR_PERBUILD_Microsoft.Xaml.Behaviors.dll" Value="..\bin\Release\net6.0-windows\publish"/>
@@ -25,6 +26,7 @@
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_AudioPlayer.dll_1" Value="AudioPlayer.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_AudioPlayer.exe" Value="AudioPlayer.exe"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_AudioPlayer.runtimeconfig.json" Value="AudioPlayer.runtimeconfig.json"/>
+    <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_DangerOnTheMotorwayxV10.ttf" Value="DangerOnTheMotorway-xV10.ttf"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_MaterialDesignColors.dll" Value="MaterialDesignColors.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_MaterialDesignThemes.Wpf.dll" Value="MaterialDesignThemes.Wpf.dll"/>
     <ROW Property="AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Xaml.Behaviors.dll" Value="Microsoft.Xaml.Behaviors.dll"/>
@@ -59,12 +61,14 @@
   <COMPONENT cid="caphyon.advinst.msicomp.MsiDirsComponent">
     <ROW Directory="APPDIR" Directory_Parent="TARGETDIR" DefaultDir="APPDIR:." IsPseudoRoot="1"/>
     <ROW Directory="AudioPlayer_Dir" Directory_Parent="APPDIR" DefaultDir="AUDIOP~1|AudioPlayer"/>
+    <ROW Directory="Fonts_Dir" Directory_Parent="AudioPlayer_Dir" DefaultDir="Fonts"/>
     <ROW Directory="Resources_Dir" Directory_Parent="AudioPlayer_Dir" DefaultDir="RESOUR~1|Resources"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
     <ROW Component="APPDIR" ComponentId="{8190F2F8-1BBD-4926-B2AA-C3973F00AEC8}" Directory_="APPDIR" Attributes="0"/>
     <ROW Component="AudioPlayer_PrimaryOutput" ComponentId="{051972FE-97C6-4FF7-B850-4AF9152123DF}" Directory_="AudioPlayer_Dir" Attributes="0" KeyPath="AudioPlayer.deps.json" Type="0"/>
+    <ROW Component="AudioPlayer_PublishOutput_Fonts" ComponentId="{03247A29-7CC6-43A8-9B18-EF4CF66A7272}" Directory_="Fonts_Dir" Attributes="0" KeyPath="DangerOnTheMotorwayxV10.ttf" Type="0"/>
     <ROW Component="AudioPlayer_PublishOutput_Resources" ComponentId="{4EB75868-1300-4186-9F8A-22BEB1449FEE}" Directory_="Resources_Dir" Attributes="0" KeyPath="icon.ico" Type="0"/>
     <ROW Component="ProductInformation" ComponentId="{649263FD-41D2-4E3E-AA05-D05796E7787E}" Directory_="APPDIR" Attributes="4" KeyPath="Version"/>
   </COMPONENT>
@@ -89,12 +93,14 @@
     <ROW File="NAudio.WinMM.dll" Component_="AudioPlayer_PrimaryOutput" FileName="NAUDIO~7.DLL|[|AI_PROPPATH_FILENAME_PERBUILD_NAudio.WinMM.dll]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_NAudio.WinMM.dll&gt;" SelfReg="false"/>
     <ROW File="icon.ico" Component_="AudioPlayer_PublishOutput_Resources" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_icon.ico]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_icon.ico&gt;" SelfReg="false"/>
     <ROW File="icon.png" Component_="AudioPlayer_PublishOutput_Resources" FileName="[|AI_PROPPATH_FILENAME_PERBUILD_icon.png]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_icon.png&gt;" SelfReg="false"/>
+    <ROW File="DangerOnTheMotorwayxV10.ttf" Component_="AudioPlayer_PublishOutput_Fonts" FileName="DANGER~2.TTF|[|AI_PROPPATH_FILENAME_PERBUILD_DangerOnTheMotorwayxV10.ttf]" Attributes="0" SourcePath="&lt;AI_APPPATH_PERBUILD_DangerOnTheMotorwayxV10.ttf&gt;" SelfReg="false"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.AppPathsComponent">
     <ROW Name="AI_APPPATH_PERBUILD_AudioPlayer.deps.json" Path="[|AI_PROPPATH_DIR_PERBUILD_AudioPlayer.deps.json]\[|AI_PROPPATH_FILENAME_PERBUILD_AudioPlayer.deps.json]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_AudioPlayer.dll_1" Path="[|AI_PROPPATH_DIR_PERBUILD_AudioPlayer.dll_1]\[|AI_PROPPATH_FILENAME_PERBUILD_AudioPlayer.dll_1]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_AudioPlayer.exe" Path="[|AI_PROPPATH_DIR_PERBUILD_AudioPlayer.exe]\[|AI_PROPPATH_FILENAME_PERBUILD_AudioPlayer.exe]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_AudioPlayer.runtimeconfig.json" Path="[|AI_PROPPATH_DIR_PERBUILD_AudioPlayer.runtimeconfig.json]\[|AI_PROPPATH_FILENAME_PERBUILD_AudioPlayer.runtimeconfig.json]" Type="2" Content="0"/>
+    <ROW Name="AI_APPPATH_PERBUILD_DangerOnTheMotorwayxV10.ttf" Path="[|AI_PROPPATH_DIR_PERBUILD_DangerOnTheMotorwayxV10.ttf]\[|AI_PROPPATH_FILENAME_PERBUILD_DangerOnTheMotorwayxV10.ttf]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_MaterialDesignColors.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_MaterialDesignColors.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_MaterialDesignColors.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_MaterialDesignThemes.Wpf.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_MaterialDesignThemes.Wpf.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_MaterialDesignThemes.Wpf.dll]" Type="2" Content="0"/>
     <ROW Name="AI_APPPATH_PERBUILD_Microsoft.Xaml.Behaviors.dll" Path="[|AI_PROPPATH_DIR_PERBUILD_Microsoft.Xaml.Behaviors.dll]\[|AI_PROPPATH_FILENAME_PERBUILD_Microsoft.Xaml.Behaviors.dll]" Type="2" Content="0"/>
@@ -183,6 +189,7 @@
     <ROW Feature_="MainFeature" Component_="ProductInformation"/>
     <ROW Feature_="MainFeature" Component_="AudioPlayer_PrimaryOutput"/>
     <ROW Feature_="MainFeature" Component_="AudioPlayer_PublishOutput_Resources"/>
+    <ROW Feature_="MainFeature" Component_="AudioPlayer_PublishOutput_Fonts"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiIconsComponent">
     <ROW Name="icon.exe" SourcePath="..\Resources\icon.ico" Index="0"/>
@@ -239,5 +246,6 @@
     <ROW ProjectId="{2d9a5652-8532-4c16-82af-025dcd560d11}" ProjectName="AudioPlayer" OutputGroup="PublishOutput" OutputFile="NAudio.WinMM.dll"/>
     <ROW ProjectId="{2d9a5652-8532-4c16-82af-025dcd560d11}" ProjectName="AudioPlayer" OutputGroup="PublishOutput" OutputFile="icon.ico"/>
     <ROW ProjectId="{2d9a5652-8532-4c16-82af-025dcd560d11}" ProjectName="AudioPlayer" OutputGroup="PublishOutput" OutputFile="icon.png"/>
+    <ROW ProjectId="{2d9a5652-8532-4c16-82af-025dcd560d11}" ProjectName="AudioPlayer" OutputGroup="PublishOutput" OutputFile="DangerOnTheMotorwayxV10.ttf"/>
   </COMPONENT>
 </DOCUMENT>

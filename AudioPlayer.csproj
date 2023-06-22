@@ -37,4 +37,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Forms\Settings_Form.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

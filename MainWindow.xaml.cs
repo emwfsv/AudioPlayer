@@ -1,23 +1,19 @@
-﻿using Microsoft.Win32;
-using NAudio.Gui;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using AudioPlayer.Classes;
 using AudioPlayer.Handlers;
 using System.Timers;
 using System.Threading;
+using System.Windows.Media;
+using AudioPlayer.Forms;
 
 namespace AudioPlayer
 {
@@ -29,6 +25,18 @@ namespace AudioPlayer
         public MainWindow()
         {
             InitializeComponent();
+
+            //Set default colorscheme
+            ApplicationColorScheme = new ApplicationColorScheme()
+            {
+                ApplicationBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FCB9B2")),
+                ApplicationButtonText = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FCB9B2")),
+                ApplicationDatagridText = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000000")),
+                ApplicationBanner = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#8C2F39")),
+                ApplicationLogo = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#461220")),
+            };
+            SetApplicationColorScheme(ApplicationColorScheme, null);
+
 
             //Set Assembly version to app
             lblVersion.Content = "Ver: " + GetAssemblyVersion();
@@ -65,6 +73,8 @@ namespace AudioPlayer
         private Dictionary<string, string> TrackFrameDatas;
         private List<DataGridObject> DataGridObjects_Folder;
         private List<DataGridObject> DataGridObjects_FileData;
+        private ApplicationColorScheme ApplicationColorScheme;
+
 
         //Trach handler
         private Mp3TrackHandler Mp3TrackHandler { set; get; }
@@ -104,6 +114,11 @@ namespace AudioPlayer
         private void btnStepBackSelect_Click(object sender, RoutedEventArgs e)
         {
             SelectPrevious();
+        }
+
+        private void btnRewindSelect_Click(object sender, RoutedEventArgs e)
+        {
+            RewindTrack();
         }
 
         private void btnStopSelect_Click(object sender, RoutedEventArgs e)
@@ -173,14 +188,14 @@ namespace AudioPlayer
                 if (dataGridFolderList.SelectedIndex > 0)
                 {
                     dataGridFolderList.SelectedIndex = dataGridFolderList.SelectedIndex - 1;
+                }
 
-                    if (Playing)
-                    {
-                        StopPlayer();
-                        Playing = true;
-                        NewSong = true;
-                        btnPlayPauseSelect_Click(this, null);
-                    }
+                if (Playing)
+                {
+                    StopPlayer();
+                    Playing = true;
+                    NewSong = true;
+                    btnPlayPauseSelect_Click(this, null);
                 }
 
             }
@@ -200,7 +215,7 @@ namespace AudioPlayer
             }
         }
 
-        private void btnFastForwardSelect_Click(object sender, RoutedEventArgs e)
+        private void btnFastForwardStepSelect_Click(object sender, RoutedEventArgs e)
         {
             var currentTime = NPlayer.GetPositionInSeconds();
             var maxTime = NPlayer.GetLenghtInSeconds();
@@ -214,9 +229,23 @@ namespace AudioPlayer
             }
         }
 
+        private void btnFastForwardSelect_Click(object sender, RoutedEventArgs e)
+        {
+            FastForwardTrack();
+        }
+
         private void btnSettings_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                var _settings = new Settings_Form(ApplicationColorScheme);
+                _settings.UpdatedColorscheme += SetApplicationColorScheme;
+                _settings.Show();
+            }
+            catch (Exception ex)
+            {
 
+            }
         }
 
         private void btnAbout_Click(object sender, RoutedEventArgs e)
@@ -421,6 +450,48 @@ namespace AudioPlayer
             }
         }
 
+        private void SetApplicationColorScheme(object sender, EventArgs e)
+        {
+            var scheme = (ApplicationColorScheme)sender;
+
+            //Buttons
+            btnAbout.Foreground = scheme.ApplicationButtonText;
+            btnBack.Foreground = scheme.ApplicationButtonText;
+            btnForward.Foreground = scheme.ApplicationButtonText;
+            btnExit.Foreground = scheme.ApplicationButtonText;
+            btnFastForward.Foreground = scheme.ApplicationButtonText;
+            btnOpen.Foreground = scheme.ApplicationButtonText;
+            btnPlayIcon.Foreground = scheme.ApplicationButtonText;
+            btnPlayPause.Foreground = scheme.ApplicationButtonText;
+            btnFastForwardStep.Foreground = scheme.ApplicationButtonText;
+            btnFastForward.Foreground = scheme.ApplicationButtonText;
+            btnRewind.Foreground = scheme.ApplicationButtonText;
+            btnRewindStep.Foreground = scheme.ApplicationButtonText;
+            btnSettings.Foreground = scheme.ApplicationButtonText;
+            btnStop.Foreground = scheme.ApplicationButtonText;
+
+            //DataGrids and grids
+            dataGridFileData.Background = scheme.ApplicationBackground;
+            dataGridFolderList.Background = scheme.ApplicationBackground;
+            dataGridFileData.Foreground = scheme.ApplicationDatagridText;
+            dataGridFolderList.Foreground = scheme.ApplicationDatagridText;
+            gridFooter.Background = scheme.ApplicationBackground;
+            gridDatagrid.Background = scheme.ApplicationBackground;
+
+            //Labels
+            lbl_ScoreText.Foreground = scheme.ApplicationButtonText;
+
+            //Banner
+            grdMenyBar.Background = scheme.ApplicationBanner;
+
+            //Logo
+            appIcon.Foreground = scheme.ApplicationLogo;
+            
+
+
+
+            ApplicationColorScheme = scheme;
+        }
 
         //=======================================================
         //                     Player Actions
@@ -521,6 +592,54 @@ namespace AudioPlayer
             catch { }
         }
 
+        private void RewindTrack()
+        {
+            try
+            {
+                var currentPosition = NPlayer.GetPositionInSeconds();
+
+                if (currentPosition > 1)
+                {
+                    NPlayer.SetPosition(currentPosition - 1);
+                }
+                else
+                {
+                    if (dataGridFolderList.SelectedIndex > 0)
+                    {
+                        SelectPrevious();
+                    }
+                    if (currentPosition > 1)
+                    {
+                        var trackLength = NPlayer.GetLenghtInSeconds();
+                        NPlayer.SetPosition(trackLength - 1);
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private void FastForwardTrack()
+        {
+            try
+            {
+                var currentPosition = NPlayer.GetPositionInSeconds();
+                var trackLength = NPlayer.GetLenghtInSeconds();
+
+                if (currentPosition < trackLength - 1)
+                {
+                    NPlayer.SetPosition(currentPosition + 1);
+                }
+                else
+                {
+                    if (dataGridFolderList.SelectedIndex < dataGridFolderList.Items.Count)
+                    {
+                        SelectNext();
+                    }
+                }
+            }
+            catch { }
+        }
+
         //=======================================================
         //                     Timer Actions
         //=======================================================
@@ -541,5 +660,6 @@ namespace AudioPlayer
             }
             catch { }
         }
+
     }
 }
