@@ -63,7 +63,7 @@ namespace AudioPlayer.Forms
                     case "Dark":
                         ApplicationColorScheme.ApplicationBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#000411"));
                         ApplicationColorScheme.ApplicationBanner = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#160C28"));
-                        ApplicationColorScheme.ApplicationLogo = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#AEB7B3"));
+                        ApplicationColorScheme.ApplicationLogo = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#55EFCB68"));
                         ApplicationColorScheme.ApplicationButtonText = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#EFCB68"));
                         ApplicationColorScheme.ApplicationDatagridText = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#EFCB68"));
                         break;
@@ -83,9 +83,9 @@ namespace AudioPlayer.Forms
                 iconLogo.Foreground = ApplicationColorScheme.ApplicationLogo;
                 iconLogo.Background= ApplicationColorScheme.ApplicationBanner;
 
-                b1.Foreground = ApplicationColorScheme.ApplicationButtonText;
-                b2.Foreground = ApplicationColorScheme.ApplicationButtonText;
-                b3.Foreground = ApplicationColorScheme.ApplicationButtonText;
+                b1.Foreground = ApplicationColorScheme.ApplicationDatagridText;
+                b2.Foreground = ApplicationColorScheme.ApplicationDatagridText;
+                b3.Foreground = ApplicationColorScheme.ApplicationDatagridText;
                 lblDescription.Foreground = ApplicationColorScheme.ApplicationDatagridText;
             }
             catch { }
